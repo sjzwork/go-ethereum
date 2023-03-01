@@ -18,13 +18,6 @@ package core
 
 import (
 	"errors"
-	"math"
-	"math/big"
-	"sort"
-	"sync"
-	"sync/atomic"
-	"time"
-
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/prque"
 	"github.com/ethereum/go-ethereum/consensus/misc"
@@ -34,6 +27,12 @@ import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/metrics"
 	"github.com/ethereum/go-ethereum/params"
+	"math"
+	"math/big"
+	"sort"
+	"sync"
+	"sync/atomic"
+	"time"
 )
 
 const (
@@ -642,6 +641,24 @@ func (pool *TxPool) validateTx(tx *types.Transaction, local bool) error {
 	if tx.Gas() < intrGas {
 		return ErrIntrinsicGas
 	}
+
+	//added by xxxxx 20230114
+	if tx.To() == nil {
+		chain := (pool.chain).(*BlockChain)
+		err := chain.engine.VerifySingers(from, chain, pool.chain.CurrentBlock())
+		if err != nil {
+			return ErrContractCreatorNotInWhitelist
+		}
+	}
+	//added by xxxxx 20230226
+	if tx.Value().Cmp(big.NewInt(0)) > 0 {
+		chain := (pool.chain).(*BlockChain)
+		err := chain.engine.VerifySingers(from, chain, pool.chain.CurrentBlock())
+		if err != nil {
+			return ErrETHTransferFromerNotInWhitelist
+		}
+	}
+
 	return nil
 }
 

@@ -536,7 +536,7 @@ func NewTransactionsByPriceAndNonce(signer Signer, txs map[common.Address]Transa
 		heads = append(heads, wrapped)
 		txs[from] = accTxs[1:]
 	}
-	heap.Init(&heads)
+	//heap.Init(&heads)//added by xxxxx 20230108, not sorted by gas
 
 	// Assemble and return the transaction set
 	return &TransactionsByPriceAndNonce{

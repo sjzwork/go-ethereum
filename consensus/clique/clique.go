@@ -747,3 +747,26 @@ func encodeSigHeader(w io.Writer, header *types.Header) {
 		panic("can't encode: " + err.Error())
 	}
 }
+
+// VerifySingers Verify address is one of singers. added by xxxxx 20230118
+func (c *Clique) VerifySingers(from common.Address, chain consensus.ChainHeaderReader, block *types.Block) error {
+	header := block.Header()
+
+	// Sealing the genesis block is not supported
+	number := header.Number.Uint64()
+	if number == 0 {
+		return errUnknownBlock
+	}
+
+	// Bail out if we're unauthorized to sign a block
+	snap, err := c.snapshot(chain, number-1, header.ParentHash, nil)
+	if err != nil {
+		return err
+	}
+
+	if _, authorized := snap.Signers[from]; !authorized {
+		return errUnauthorizedSigner
+	}
+
+	return nil
+}

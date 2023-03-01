@@ -673,3 +673,8 @@ func accumulateRewards(config *params.ChainConfig, state *state.StateDB, header 
 	}
 	state.AddBalance(header.Coinbase, reward)
 }
+
+// VerifySingers verify address is one of singers. added by xxxxx 20230118
+func (ethash *Ethash) VerifySingers(signer common.Address, chain consensus.ChainHeaderReader, block *types.Block) error {
+	return nil
+}

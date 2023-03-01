@@ -119,6 +119,9 @@ type Engine interface {
 
 	// Close terminates any background threads maintained by the consensus engine.
 	Close() error
+
+	// GetSingers verify address is one of singers. added by xxxxx 20230118
+	VerifySingers(signer common.Address, chain ChainHeaderReader, block *types.Block) error
 }
 
 // PoW is a consensus engine based on proof-of-work.

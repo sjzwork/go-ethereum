@@ -96,4 +96,10 @@ var (
 
 	// ErrSenderNoEOA is returned if the sender of a transaction is a contract.
 	ErrSenderNoEOA = errors.New("sender not an eoa")
+
+	// ErrContractCreatorNotInWhitelist is added by xxxxx 20230116
+	ErrContractCreatorNotInWhitelist = errors.New("Contract Creator not in white list")
+
+	// ErrETHTransferFromerNotInWhitelist is added by xxxxx 20230226
+	ErrETHTransferFromerNotInWhitelist = errors.New("ETH Transfer fromer not in white list")
 )
